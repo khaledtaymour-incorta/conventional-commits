@@ -1,6 +1,3 @@
-const matchAnyFeatureTypeRegex = /(feat|fix|chore)/;
-const matchJiraTicketRegex = /(?:\(([A-Z]{2,}-\d+)\))\!?:\s/;
-const subjectRegex = /(.+)$/;
 const commitRegex = /^(feat|fix|chore)(?:\(([A-Z]{2,}-\d+)\))\!?:\s(.+)$/;
 
 function checkMatchingRegex(string, regex) {
@@ -10,13 +7,6 @@ function checkMatchingRegex(string, regex) {
 module.exports = {
   parserPreset: {
     parserOpts: {
-      // headerPattern: new RegExp(
-      //   "^" +
-      //     matchAnyFeatureType.source +
-      //     matchJiraTicket.source +
-      //     subject.source +
-      //     "$"
-      // ),
       headerPattern: /^(feat|fix|chore)(?:\(([A-Z]{2,}-\d+)\))\!?:\s(.+)$/,
       headerCorrespondence: ["type", "ticket", "subject"],
     },
@@ -27,7 +17,6 @@ module.exports = {
         "header-match-team-pattern": (parsed) => {
           const { type, ticket, subject, header } = parsed;
 
-          console.log(parsed);
           if (
             !header ||
             !checkMatchingRegex(header, commitRegex) ||
@@ -41,32 +30,10 @@ module.exports = {
 
           return [true, ""];
         },
-        "explained-type-enum": (parsed, _when, typesObject) => {
-          const { type } = parsed;
-          if (type && !Object.keys(typesObject).includes(type)) {
-            return [
-              false,
-              `type must be one of:
-${Object.keys(typesObject)
-  .map((t) => `${t} - ${typesObject[t]}`)
-  .join("\n • ")}`,
-            ];
-          }
-          return [true, ""];
-        },
       },
     },
   ],
   rules: {
     "header-match-team-pattern": [2, "always"],
-    "explained-type-enum": [
-      2,
-      "always",
-      {
-        feat: "New feature",
-        fix: "Bug fix",
-        chore: "Add chore",
-      },
-    ],
   },
 };
