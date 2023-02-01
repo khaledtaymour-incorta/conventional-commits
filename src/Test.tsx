@@ -8,6 +8,7 @@ function Test() {
       Test: *<label> count: ${count} </label>
       <button onClick={() => setCount((prev) => prev + 1)}>Inc</button>
       <button onClick={() => setCount((prev) => prev - 1)}>Dec</button>
+      <label>{Date.now()}</label>
     </div>
   );
 }
