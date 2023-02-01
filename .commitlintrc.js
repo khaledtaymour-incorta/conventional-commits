@@ -7,7 +7,7 @@ function checkMatchingRegex(string, regex) {
 module.exports = {
   parserPreset: {
     parserOpts: {
-      headerPattern: /^(feat|fix|chore)(?:\(([A-Z]{2,}-\d+)\))\!?:\s(.+)$/,
+      headerPattern: commitRegex,
       headerCorrespondence: ["type", "ticket", "subject"],
     },
   },
